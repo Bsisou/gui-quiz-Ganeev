@@ -22,12 +22,12 @@ image=self.img)
 
     
       #Entry widget for my user name
-      self.entry_box = Entry(parent, bg="slategray1")
+      self.entry_box = Entry(parent, bg="slategray1", width=27, font=("Arial", 10), bd=1, relief="groove", justify="center",)
       self.entry_box_window = self.canvas.create_window(480, 455, anchor='center', window=self.entry_box)
 
       #Next button to proceed onto the next page
-      self.next_button = Button(parent, text = "Next", bg = "slategray1", command=self.name_collection)
-      self.next_button_window = self.canvas.create_window(750, 455, anchor='center', window=self.next_button)
+      self.next_button = Button(parent, text = "Next", bg = "slategray1", command=self.name_collection, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
+      self.next_button_window = self.canvas.create_window(750, 435, anchor='center', window=self.next_button)
 
     def name_collection(self):
         name = self.entry_box.get()

@@ -1,10 +1,44 @@
 import tkinter as tk
 from tkinter import Frame, Label, Entry, Button
 from PIL import Image, ImageTk
+import random
 
-names_list = []
 
-class quizStarter:
+username_list = []
+request = []
+
+class Questions:
+    def __init__(self, parent):
+  
+      questions_dictionary = {
+           1:["How many bones does do sharks have?:", '0', '237', '123', '50', 1],
+           2:["What is the distance from Earth to the Sun?:" , '9.2 million km', '93 million km', '149 million km', '259 million km', '2'],
+           3:["What is the coldest place on earth?:", 'Iceland', 'Greenland', 'Antarctica', 'Finland', 3],
+           4:["Which travels faster, light or sound?:", 'Light', 'Sound', 'Both', 'Neither', 1],
+           5:["How many minutes are in a full week?:", '27000', '10080', '14400', '43200', 2],
+           6:["Which planet has the most moons?:", 'Jupitar', 'Earth', 'Neptune', 'Saturn', 4],
+           7:["What is the world's smallest country?:"," 'Monaco', 'Maldives', 'Vatican City', 'San Marino", 3],
+           8:["Who won the last FIFA Worldcup in 2022?:", 'Argentina', 'France', 'Croatia', 'Portugal', 1],
+           9:["What is the heighest grossing film of all time?:", 'Titanic', 'Avatar', 'Avengers Endgame', 'Fast And Furious 7', 3], 
+          10:["Who invented the light bulb?:", 'Isaac Newton', 'Nikola Tesla', 'Thomas Edison', 'Albert Einstein', 3]
+           
+      }
+
+      # self.questions_frame = Frame(parent)
+      # self.questions_frame.grid()
+
+      # self.question_label = Label(self.questions_frame, text = questions_dictionary[1][0])
+      # self.question_label.grid(row = 1, column = 1)
+  
+    def random_quesion():
+        global gKQQnum
+        gKQQnum = random.randint(1,10)
+        if gKQQnum not in request:
+          request.append(gKQQnum)
+        elif gKQQnum in request:
+         random_quesion()
+    
+class QuizStarter:
     def __init__(self, parent):
       self.parent = parent
       self.background_color = "slategray1"
@@ -29,17 +63,18 @@ image=self.img)
       self.entry_box_window = self.canvas.create_window(480, 455, anchor='center', window=self.entry_box)
 
       #Next button to proceed onto the next page
-      self.next_button = Button(self.parent, text = "Next", bg = "slategray1", command=self.name_collection, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
+      self.next_button = Button(self.parent, text = "Next", bg = "slategray1", command=self.home_page, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
       self.next_button_window = self.canvas.create_window(750, 435, anchor='center', window=self.next_button)
 
-    def name_collection(self):
+    def home_page(self):
         name = self.entry_box.get()
-        names_list.append(name)
-        print(names_list)
+        username_list.append(name)
+        print(username_list)
         self.continue_to_the_question_page()
    
     def continue_to_the_question_page(self):
         self.canvas.destroy()
+        quiz_starter_object = QuizStarter(self.parent)
 
       #Create a new canvas to continue to the questioning and answeering page
         self.next_canvas = tk.Canvas(self.parent, bg="slategray1", width=960, height=540)
@@ -63,14 +98,13 @@ image=self.img)
     def go_back(self):
         self.next_canvas.destroy()
         self.create_homepage_canvas()
-    
-#Create Tkinter Object
-root = tk.Tk()
 
-# Create QuizStarter object
-quiz_starter_object = quizStarter(root)
 
 #Execute Tkinter
 if __name__ == "__main__":
- root.title("General Knowledge Quiz")
- root.mainloop()
+  #Create Tkinter Object
+ GKQ = tk.Tk()
+ GKQ.title("General Knowledge Quiz")
+  # Create QuizStarter object
+ quiz_starter_object = QuizStarter(GKQ)
+ GKQ.mainloop()

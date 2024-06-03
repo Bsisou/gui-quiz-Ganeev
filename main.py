@@ -165,4 +165,4 @@ if __name__ == "__main__":
     gKQ.title("General Knowledge Quiz")
     #Create Quizstarter object
     quiz_starter_object = QuizStarter(gKQ)
-    gKQ.mainloop()
+    gKQ.mainloop() 

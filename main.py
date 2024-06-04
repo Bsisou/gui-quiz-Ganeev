@@ -109,8 +109,8 @@ class QuizStarter:
 
     def display_question(self, question_data, question_num):
         question_label_text = question_data[0]
-        question_label = Label(self.next_canvas, text=question_label_text, font=("Arial", 12, "bold"), bg="slategray1", fg="black")
-        question_label.place(x=352, y=80)
+        question_label = Label(self.next_canvas, text=question_label_text, font=("Arial", 10, "bold"), bg="slategray1", fg="black",)
+        question_label.place(x=360, y=80)
         self.question_widgets.append(question_label)
         self.create_option_buttons(question_data, question_num)
 

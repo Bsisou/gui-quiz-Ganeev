@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import DISABLED, Frame, Label, Entry, Button, Radiobutton, IntVar
+from typing import final
 from PIL import Image, ImageTk
 import random
 
@@ -72,7 +73,7 @@ class QuizStarter:
     #this to continue to the question page
     def continue_to_the_question_page(self):
         self.canvas.destroy()
-    # questions_object = Questions(self.parent)
+    #Questions_object = Questions(self.parent)
 
     #Create a new canvas to continue to the questioning and answeering page
         self.next_canvas = tk.Canvas(self.parent, bg="slategray1", width=960, height=540)
@@ -100,21 +101,23 @@ class QuizStarter:
         for widget in self.question_widgets:
             widget.destroy()
         self.question_widgets.clear()
-
+    
+    # Get the current question from the questions dictionary
         if self.current_question_index < 10:
             self.current_question_index += 1
             question_num = self.current_question_index
             question_data = self.questions_dictionary[question_num]
             self.display_question(question_data, question_num)
 
+    #Create label for the quiz questions
     def display_question(self, question_data, question_num):
         question_label_text = question_data[0]
         question_label = Label(self.next_canvas, text=question_label_text, font=("Arial", 10, "bold"), bg="slategray1", fg="black",)
         question_label.place(x=360, y=80)
+   
+    # Create radio buttons for the answer options    
         self.question_widgets.append(question_label)
         self.create_option_buttons(question_data, question_num)
-        
-    # Create option buttons for the question
     def create_option_buttons(self, question_data, question_num):
         options = question_data[1:5]
         correct_option = question_data[5]
@@ -158,9 +161,17 @@ class QuizStarter:
     #Proceed to the next question automatically after a delay
         self.parent.after(2000, self.load_next_question)
 
+    #Create a function to display a final message saying the quiz is completed
+    def show_final message(self):
+        for widget in self.next_canvas.winfo_children():
+          widget.destroy()
+        final_message = Label(self.next_canvas, text="Quiz Completed!", bg="slategray1", font=("Arial", 20, "bold"))
+        final_message.place(x=450, y=270, anchor="center")
+
     def go_back(self):
         self.next_canvas.destroy()
         self.create_homepage_canvas()
+    
     #Exceute tkinter
 if __name__ == "__main__":
     #Create Tkinter object

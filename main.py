@@ -162,11 +162,15 @@ class QuizStarter:
         self.parent.after(2000, self.load_next_question)
 
     #Create a function to display a final message saying the quiz is completed
-    def show_final message(self):
+    def show_final_message(self):
         for widget in self.next_canvas.winfo_children():
           widget.destroy()
-        final_message = Label(self.next_canvas, text="Quiz Completed!", bg="slategray1", font=("Arial", 20, "bold"))
+        final_message = Label(self.next_canvas, text="General Knowledge Quiz Completed!", bg="slategray1", font=("Arial", 20, "bold"))
         final_message.place(x=450, y=270, anchor="center")
+
+    #Next button to go to the final page where score is displayed
+        self.next_button = Button(self.next_canvas, text="Next", bg="slategray1", command=self.show_final_message, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
+        self.next_button.place(x=400, y=300)
 
     def go_back(self):
         self.next_canvas.destroy()

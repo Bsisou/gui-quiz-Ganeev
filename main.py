@@ -194,6 +194,18 @@ class QuizStarter:
                 incorrect_label = Label(self.next_canvas, text=f"Incorrect: {question}\nCorrect Answer: {answer}", bg="slategray1", font=("Arial", 12, "bold"), fg="black")
                 incorrect_label.place(x=400, y=y_position, anchor="center")
                 y_position+=40
+
+    #Restart button where the user can restart the quiz
+        self.restart_button = Button(self.next_canvas, text="Restart", bg="slategray1", command=self.restart_quiz, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
+        self.restart_button.place(x=400, y=400)
+
+    #Function to restart the quiz
+    def restart_quiz(self):
+        self.score = 0
+        self.current_question_index = 0
+        self.incorrect_answers = []
+        self.next_canvas.destroy()
+        self.create_homepage_canvas()
       
 
     def go_back(self):

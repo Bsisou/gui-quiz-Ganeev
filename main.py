@@ -172,6 +172,18 @@ class QuizStarter:
         self.next_button = Button(self.next_canvas, text="Next", bg="slategray1", command=self.show_final_message, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
         self.next_button.place(x=400, y=300)
 
+    #Display the final score of the user out of 10
+    def show_final_message(self):
+        for widget in self.next_canvas.winfo_children():
+            widget.destroy()
+        final_message = Label(self.next_canvas, text=f"Your score is {self.score}/10", bg="slategray1", font=("Arial", 20, "bold"))
+        final_message.place(x=400, y=200, anchor="center")
+
+    #Display incorrectly answered questions and their correct answers
+        y_position = 300
+        if self.incorrect_answers:
+      
+
     def go_back(self):
         self.next_canvas.destroy()
         self.create_homepage_canvas()

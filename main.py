@@ -104,10 +104,11 @@ class QuizStarter:
     
     # Get the current question from the questions dictionary
         if self.current_question_index < 10:
-            self.current_question_index += 1
-            question_num = self.current_question_index
+            question_num = self.current_question_index + 1
             question_data = self.questions_dictionary[question_num]
             self.display_question(question_data, question_num)
+        else:
+            self.show_final_message()
 
     #Create label for the quiz questions
     def display_question(self, question_data, question_num):
@@ -159,6 +160,7 @@ class QuizStarter:
             self.incorrect_answers.append((self.questions_dictionary[question_num][0], correct_answer))
     
     #Proceed to the next question automatically after a delay
+        self.current_question_index += 1
         self.parent.after(2000, self.load_next_question)
 
     #Create a function to display a final message saying the quiz is completed
@@ -169,11 +171,11 @@ class QuizStarter:
         final_message.place(x=450, y=270, anchor="center")
 
     #Next button to go to the final page where score is displayed
-        self.next_button = Button(self.next_canvas, text="Next", bg="slategray1", command=self.show_final_message, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
+        self.next_button = Button(self.next_canvas, text="Next", bg="slategray1", command=self.show_final_score, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
         self.next_button.place(x=400, y=300)
 
     #Display the final score of the user out of 10
-    def show_final_message(self):
+    def show_final_score(self):
         for widget in self.next_canvas.winfo_children():
             widget.destroy()
         final_message = Label(self.next_canvas, text=f"Your score is {self.score}/10", bg="slategray1", font=("Arial", 20, "bold"))
@@ -182,6 +184,10 @@ class QuizStarter:
     #Display incorrectly answered questions and their correct answers
         y_position = 300
         if self.incorrect_answers:
+            for question, answer in self.incorrect_answers:
+                incorrect_label = Label(self.next_canvas, text=f"Incorrect: {question}\nCorrect Answer: {answer}", bg="slategray1", font=("Arial", 12, "bold"), fg="black")
+                incorrect_label.place(x=400, y=y_position, anchor="center")
+                y_position+=40
       
 
     def go_back(self):

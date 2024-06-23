@@ -5,7 +5,6 @@ from PIL import Image, ImageTk
 import random
 
 username_list = []
-request = []
 
     #creates the first page
 class QuizStarter:
@@ -62,7 +61,6 @@ class QuizStarter:
     def home_page(self):
         name = self.entry_box.get()
     # Make sure the name entry box is not empty before the user proceeds 
-
         if name:
             username_list.append(name)
             self.continue_to_the_question_page()
@@ -73,7 +71,15 @@ class QuizStarter:
     #this to continue to the question page
     def continue_to_the_question_page(self):
         self.canvas.destroy()
-    #Questions_object = Questions(self.parent)
+        self.randomise_questions()
+        self.load_next_question()
+
+    #Funtion to generate random questions out of the list of my 10 questions
+    def randomise_questions(self):
+        question_numbers = list(self.questions_dictionary.keys())
+        self.randomised_question_numbers = random.sample(question_numbers, k=len(question_numbers))
+        self.randomised_questions = [self.questions_dictionary[num] for num in self.randomised_question_numbers]
+   #Questions_object = Questions(self.parent)
 
     #Create a new canvas to continue to the questioning and answeering page
         self.next_canvas = tk.Canvas(self.parent, bg="slategray1", width=960, height=540)
@@ -102,9 +108,9 @@ class QuizStarter:
             widget.destroy()
         self.question_widgets.clear()
     
-    # Get the current question from the questions dictionary
-        if self.current_question_index < 10:
-            question_num = self.current_question_index + 1
+    # Get a random question from the questions dictionary
+        if self.current_question_index < len(self.randomised_question_numbers):
+            question_num = self.randomised_question_numbers[self.current_question_index]
             question_data = self.questions_dictionary[question_num]
             self.display_question(question_data, question_num)
         else:

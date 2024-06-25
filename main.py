@@ -3,6 +3,7 @@ from tkinter import DISABLED, Frame, Label, Entry, Button, Radiobutton, IntVar
 from typing import final
 from PIL import Image, ImageTk
 import random
+import re
 
 username_list = []
 
@@ -70,13 +71,16 @@ class QuizStarter:
 
     def home_page(self):
         name = self.entry_box.get()
-    # Make sure the name entry box is not empty before the user proceeds 
-        if name:
+    # Make sure the name entry box is not empty before the user proceeds, if it is empty, display an error message. Also make sure the user doesn't enter more than 10 characters for their username. no symbols or numbers. Make the entry box have a delay before going to the next page, because after the user enters their name, it welcomes them to the quiz by displaying their name and saying welcome.
+        if name and len(name) <= 10 and re.match("^[A-Za-z]*$", name):
             username_list.append(name)
-            self.continue_to_the_question_page()
+            welcome_label = Label(self.canvas, text=f"welcome, {name}!", font=("Arial", 12, "bold"), bg="slategray1", fg="black")
+            self.canvas.create_window(480, 485, anchor='center', window=welcome_label)
+            self.canvas.after(2000, lambda: [Welcome_label.destroy(), self.continue_to_the_question_page()])
         else:
             error_label = Label(self.canvas, text="Please enter your name to proceed!", font=("Arial", 12, "bold"), bg="slategray1", fg="black")
             self.canvas.create_window(480, 485, anchor='center', window=error_label)
+            self.canvas.after(3000, error_label.destroy)
 
     #this to continue to the question page
     def continue_to_the_question_page(self):

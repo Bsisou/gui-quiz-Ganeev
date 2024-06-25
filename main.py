@@ -54,18 +54,18 @@ class QuizStarter:
     # Entry widget for the username
         self.entry_box = Entry(self.parent, bg="slategray1", width=27, font=("Arial", 10), bd=1, relief="groove", justify="center")
         self.entry_box_window = self.canvas.create_window(480, 455, anchor='center', window=self.entry_box)
-        self.entry_box.bind("<KeyRelease>", self.validate_name_length
+        self.entry_box.bind("<KeyRelease>", self.validate_name_characterlength)
 
     # Next button to proceed onto the next page
         self.next_button = Button(self.parent, text="Next", bg="slategray1", command=self.home_page, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
         self.next_button_window = self.canvas.create_window(750, 435, anchor='center', window=self.next_button)
 
     # Make sure the user doesn't enter anything else in the name entry box like symbols and numbers, it should only be letters. Also make sure the user doesn't enter more than 10 characters for their username.
-    def validate_name_length(self, event):
+    def validate_name_characterlength(self, event):
         name = self.entry_box.get()
         if len(name) > 10 or not re.match("^[A-Za-z]*$", name):
             self.entry_box.delete(10, tk.END)
-            error_label = Label(self.canvas, text="Name must be alphabetic and not longer than 10 characters!", font=("Arial", 12, "bold"), bg="slategray1", fg="red"
+            error_label = Label(self.canvas, text="Name must be alphabetic and not longer than 10 characters!", font=("Arial", 12, "bold"), bg="slategray1", fg="red")
             self.canvas.create_window(480, 485, anchor='center', window=error_label)
             self.canvas.after(3000, error_label.destroy)
 
@@ -76,7 +76,7 @@ class QuizStarter:
             username_list.append(name)
             welcome_label = Label(self.canvas, text=f"welcome, {name}!", font=("Arial", 12, "bold"), bg="slategray1", fg="black")
             self.canvas.create_window(480, 485, anchor='center', window=welcome_label)
-            self.canvas.after(2000, lambda: [Welcome_label.destroy(), self.continue_to_the_question_page()])
+            self.canvas.after(2000, lambda: [welcome_label.destroy(), self.continue_to_the_question_page()])
         else:
             error_label = Label(self.canvas, text="Please enter your name to proceed!", font=("Arial", 12, "bold"), bg="slategray1", fg="black")
             self.canvas.create_window(480, 485, anchor='center', window=error_label)
@@ -187,6 +187,14 @@ class QuizStarter:
     def show_final_message(self):
         for widget in self.next_canvas.winfo_children():
           widget.destroy()
+
+    #Adding another image for the final score page
+        final_image_path = "Finalpage.jpeg"
+        self.final_image = Image.open(final_image_path)
+        self.resized_final_image = self.final_image.resize((960, 540))
+        self.final_img = ImageTk.PhotoImage(self.resized_final_image)
+        self.next_canvas.create_image(0, 0, anchor='nw', image=self.final_img)
+        
         final_message = Label(self.next_canvas, text="General Knowledge Quiz Completed!", bg="slategray1", font=("Arial", 20, "bold"))
         final_message.place(x=450, y=270, anchor="center")
 

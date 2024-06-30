@@ -6,7 +6,6 @@ import random
 import re
 import textwrap
 
-
     #creates the first page
 class QuizStarter:
     def __init__(self, parent):
@@ -54,7 +53,7 @@ class QuizStarter:
 
     # Entry widget for the username
         self.entry_box = Entry(self.parent, bg="slategray1", width=27, font=("Arial", 10), bd=1, relief="groove", justify="center")
-        self.entry_box_window = self.canvas.create_window(480, 455, anchor='center', window=self.entry_box)
+        self.entry_box_window = self.canvas.create_window(480, 470, anchor='center', window=self.entry_box)
         self.entry_box.bind("<KeyRelease>", self.validate_name_characterlength)
 
     # Next button to proceed onto the next page
@@ -67,7 +66,7 @@ class QuizStarter:
         if len(name) > 10 or not re.match("^[A-Za-z]*$", name):
             self.entry_box.delete(10, tk.END)
             error_label = Label(self.canvas, text="Name must be alphabetic and not longer than 10 characters!", font=("Arial", 12, "bold"), bg="slategray1", fg="red")
-            self.canvas.create_window(480, 510, anchor='center', window=error_label)
+            self.canvas.create_window(480, 495, anchor='center', window=error_label)
             self.canvas.after(3000, error_label.destroy)
 
     def home_page(self):
@@ -76,11 +75,11 @@ class QuizStarter:
         if name and len(name) <= 10 and re.match("^[A-Za-z]*$", name):
             self.username_list.append(name)
             welcome_label = Label(self.canvas, text=f"welcome, {name}!", font=("Arial", 12, "bold"), bg="slategray1", fg="black")
-            self.canvas.create_window(480, 510, anchor='center', window=welcome_label)
+            self.canvas.create_window(480, 495, anchor='center', window=welcome_label)
             self.canvas.after(2000, lambda: [welcome_label.destroy(), self.continue_to_the_question_page()])
         else:
-            error_label = Label(self.canvas, text="Please enter your name to proceed!", font=("Arial", 12, "bold"), bg="slategray1", fg="black")
-            self.canvas.create_window(480, 510, anchor='center', window=error_label)
+            error_label = Label(self.canvas, text="Please enter your name to proceed!", font=("Arial", 12, "bold"), bg="slategray1", fg="red")
+            self.canvas.create_window(480, 495, anchor='center', window=error_label)
             self.canvas.after(3000, error_label.destroy)
 
     #this to continue to the question page
@@ -133,8 +132,8 @@ class QuizStarter:
         #Create label for the quiz questions/ and a Funtion to start a new line for the questions if the questions gets too long and cannot fit inside the box
     def display_question(self, question_data, question_num):
         wrapped_text = textwrap.fill(question_data[0], width=30)
-        question_label = Label(self.next_canvas, text=wrapped_text, font=("Arial", 15, "bold"), bg="slategray1", fg="black")
-        question_label.place(x=280, y=100)
+        question_label = Label(self.next_canvas, text=wrapped_text, font=("Arial", 16, "bold"), bg="black", fg="white")
+        question_label.place(x=300, y=110)
    
     # Create radio buttons for the answer options    
         self.question_widgets.append(question_label)
@@ -146,9 +145,9 @@ class QuizStarter:
         self.radio_buttons = []
 
     # Place my 4 answer option button in a square format
-        positions = [(350, 380), (350, 435), (530, 380), (530, 435)]
+        positions = [(325, 380), (325, 435), (515, 380), (515, 435)]
         for i, option in enumerate(options):
-            rb = Radiobutton(self.next_canvas, text=option, bg="slategray1", font=("Arial", 12, "bold"), value=i+1, variable=self.var1, pady=10, highlightbackground="royalblue1", highlightthickness=5)
+            rb = Radiobutton(self.next_canvas, text=option, bg="Slategray1", fg="black", font=("Arial", 12, "bold"), value=i+1, variable=self.var1, pady=10, highlightbackground="royalblue1", highlightthickness=5, width=16, anchor="w")
             x, y = positions[i]
             rb.place(x=x, y=y)
             self.radio_buttons.append(rb)
@@ -156,7 +155,7 @@ class QuizStarter:
 
     # Create the confirm button outside of the loop to go the next question
         self.confirm_button = Button(self.next_canvas, text="Confirm", bg="slategray1", font=("Arial", 12, "bold",), highlightbackground="royalblue1", highlightthickness=5, command=lambda: self.check_answer(self.var1.get(), correct_option, question_num))
-        self.confirm_button.place(x=450, y=490)
+        self.confirm_button.place(x=750, y=420)
         self.question_widgets.append(self.confirm_button)
 
     #Disable the confirm button so that the user doesn't accidentaly skip the question
@@ -195,31 +194,31 @@ class QuizStarter:
         self.final_img = ImageTk.PhotoImage(self.resized_final_image)
         self.next_canvas.create_image(0, 0, anchor='nw', image=self.final_img)
         
-        final_message = Label(self.next_canvas, text="General Knowledge Quiz Completed!", bg="slategray1", font=("Arial", 20, "bold"))
+        final_message = Label(self.next_canvas, text="General Knowledge Quiz Completed! Click Next To Reveal Your Score", bg="black", fg="white", font=("Arial", 15, "bold"))
         final_message.place(x=450, y=270, anchor="center")
 
     #Next button to go to the final page where score is displayed
         self.next_button = Button(self.next_canvas, text="Next", bg="slategray1", command=self.show_final_score, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
-        self.next_button.place(x=400, y=300)
+        self.next_button.place(x=450, y=450, anchor="center")
 
     #Display the final score of the user out of 10
     def show_final_score(self):
         for widget in self.next_canvas.winfo_children():
             widget.destroy()
-        final_message = Label(self.next_canvas, text=f"Your score is {self.score}/10", bg="slategray1", font=("Arial", 20, "bold"))
-        final_message.place(x=400, y=200, anchor="center")
+        final_message = Label(self.next_canvas, text=f"Your score is {self.score}/10 if you got any answers incorrect, it should show the correct answers for them below", bg="black", fg="white", font=("Arial", 12, "bold"), wraplength=600, justify='center')
+        final_message.place(x=620, y=50, anchor="center")
 
     #Display incorrectly answered questions and their correct answers
         y_position = 300
         if self.incorrect_answers:
             for question, answer in self.incorrect_answers:
-                incorrect_label = Label(self.next_canvas, text=f"Incorrect: {question}\nCorrect Answer: {answer}", bg="slategray1", font=("Arial", 12, "bold"), fg="black")
-                incorrect_label.place(x=400, y=y_position, anchor="center")
-                y_position+=40
+                incorrect_label = Label(self.next_canvas, text=f"Incorrect: {question}\nCorrect Answer: {answer}", bg="black", fg="red", font=("Arial", 12, "bold"),)
+                incorrect_label.place(x=620, y=y_position, anchor="center")
+                y_position+=20
 
     #Restart button where the user can restart the quiz
         self.restart_button = Button(self.next_canvas, text="Restart", bg="slategray1", command=self.restart_quiz, font=("Arial", 12, "bold"), height=2, width=15, highlightbackground="royalblue1", highlightthickness=5)
-        self.restart_button.place(x=400, y=400)
+        self.restart_button.place(x=110, y=440, anchor="center")
 
     #Function to restart the quiz
     def restart_quiz(self):

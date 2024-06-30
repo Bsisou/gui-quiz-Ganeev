@@ -4,14 +4,15 @@ from typing import final
 from PIL import Image, ImageTk
 import random
 import re
+import textwrap
 
-username_list = []
 
     #creates the first page
 class QuizStarter:
     def __init__(self, parent):
         self.parent = parent
         self.background_color = "slategray1"
+        self.username_list = []
 
     # Activate the score
         self.score = 0
@@ -21,16 +22,16 @@ class QuizStarter:
 
     # Storage for labels to be created on the Questions page
         self.questions_dictionary = {
-            1: ["How many bones do sharks have?:", '0', '237', '123', '50', 1],
-            2: ["What is the distance from Earth to the Sun?:", '9.2 million km', '93 million km', '149 million km', '259 million km', 2],
-            3: ["What is the coldest place on earth?:", 'Iceland', 'Greenland', 'Antarctica', 'Finland', 3],
-            4: ["Which travels faster, light or sound?:", 'Light', 'Sound', 'Both', 'Neither', 1],
+            1: ["How many bones do sharks have?", '0', '237', '123', '50', 1],
+            2: ["What is the distance from Earth to the Sun?", '9.2 million km', '93 million km', '149 million km', '259 million km', 2],
+            3: ["What is the coldest place on earth?", 'Iceland', 'Greenland', 'Antarctica', 'Finland', 3],
+            4: ["Which travels faster, light or sound?", 'Light', 'Sound', 'Both', 'Neither', 1],
             5: ["How many minutes are in a full week?:", '27000', '10080', '14400', '43200', 2],
-            6: ["Which planet has the most moons?:", 'Jupiter', 'Earth', 'Neptune', 'Saturn', 4],
-            7: ["What is the world's smallest country?:", 'Monaco', 'Maldives', 'Vatican City', 'San Marino', 3],
-            8: ["Who won the last FIFA Worldcup in 2022?:", 'Argentina', 'France', 'Croatia', 'Portugal', 1],
-            9: ["What is the highest grossing film of all time?:", 'Titanic', 'Avatar', 'Avengers Endgame', 'Fast And Furious 7', 3],
-            10: ["Who invented the light bulb?:", 'Isaac Newton', 'Nikola Tesla', 'Thomas Edison', 'Albert Einstein', 3]
+            6: ["Which planet has the most moons?", 'Jupiter', 'Earth', 'Neptune', 'Saturn', 4],
+            7: ["What is the world's smallest country?", 'Monaco', 'Maldives', 'Vatican City', 'San Marino', 3],
+            8: ["Who won the last FIFA Worldcup in 2022?", 'Argentina', 'France', 'Croatia', 'Portugal', 1],
+            9: ["What is the highest grossing film of all time?", 'Titanic', 'Avatar', 'Avengers Endgame', 'Fast And Furious 7', 3],
+            10: ["Who invented the light bulb?", 'Isaac Newton', 'Nikola Tesla', 'Thomas Edison', 'Albert Einstein', 3]
         }
 
         self.current_question_index = 0
@@ -66,20 +67,20 @@ class QuizStarter:
         if len(name) > 10 or not re.match("^[A-Za-z]*$", name):
             self.entry_box.delete(10, tk.END)
             error_label = Label(self.canvas, text="Name must be alphabetic and not longer than 10 characters!", font=("Arial", 12, "bold"), bg="slategray1", fg="red")
-            self.canvas.create_window(480, 485, anchor='center', window=error_label)
+            self.canvas.create_window(480, 510, anchor='center', window=error_label)
             self.canvas.after(3000, error_label.destroy)
 
     def home_page(self):
         name = self.entry_box.get()
     # Make sure the name entry box is not empty before the user proceeds, if it is empty, display an error message. Also make sure the user doesn't enter more than 10 characters for their username. no symbols or numbers. Make the entry box have a delay before going to the next page, because after the user enters their name, it welcomes them to the quiz by displaying their name and saying welcome.
         if name and len(name) <= 10 and re.match("^[A-Za-z]*$", name):
-            username_list.append(name)
+            self.username_list.append(name)
             welcome_label = Label(self.canvas, text=f"welcome, {name}!", font=("Arial", 12, "bold"), bg="slategray1", fg="black")
-            self.canvas.create_window(480, 485, anchor='center', window=welcome_label)
+            self.canvas.create_window(480, 510, anchor='center', window=welcome_label)
             self.canvas.after(2000, lambda: [welcome_label.destroy(), self.continue_to_the_question_page()])
         else:
             error_label = Label(self.canvas, text="Please enter your name to proceed!", font=("Arial", 12, "bold"), bg="slategray1", fg="black")
-            self.canvas.create_window(480, 485, anchor='center', window=error_label)
+            self.canvas.create_window(480, 510, anchor='center', window=error_label)
             self.canvas.after(3000, error_label.destroy)
 
     #this to continue to the question page
@@ -111,8 +112,7 @@ class QuizStarter:
         self.back_button_window = self.next_canvas.create_window(110, 440, anchor='center', window=self.back_button)
 
     # Creating a label for the question page
-        self.next_label = Label(self.next_canvas, text="Question page", bg="slategray1", font=("Arial", 20, "bold"))
-        self.next_label_window = self.next_canvas.create_window(130, 30, anchor="center", window=self.next_label)
+
 
         self.load_next_question()
 
@@ -130,11 +130,11 @@ class QuizStarter:
         else:
             self.show_final_message()
 
-    #Create label for the quiz questions
+        #Create label for the quiz questions/ and a Funtion to start a new line for the questions if the questions gets too long and cannot fit inside the box
     def display_question(self, question_data, question_num):
-        question_label_text = question_data[0]
-        question_label = Label(self.next_canvas, text=question_label_text, font=("Arial", 10, "bold"), bg="slategray1", fg="black",)
-        question_label.place(x=360, y=80)
+        wrapped_text = textwrap.fill(question_data[0], width=30)
+        question_label = Label(self.next_canvas, text=wrapped_text, font=("Arial", 15, "bold"), bg="slategray1", fg="black")
+        question_label.place(x=280, y=100)
    
     # Create radio buttons for the answer options    
         self.question_widgets.append(question_label)
@@ -189,7 +189,7 @@ class QuizStarter:
           widget.destroy()
 
     #Adding another image for the final score page
-        final_image_path = "Finalpage.jpeg"
+        final_image_path = "Finalpage.png"
         self.final_image = Image.open(final_image_path)
         self.resized_final_image = self.final_image.resize((960, 540))
         self.final_img = ImageTk.PhotoImage(self.resized_final_image)

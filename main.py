@@ -158,8 +158,15 @@ class QuizStarter:
         self.confirm_button.place(x=750, y=420)
         self.question_widgets.append(self.confirm_button)
 
-    #Disable the confirm button so that the user doesn't accidentaly skip the question
+    #Funtion to let the users know if they click on confirm without choosing an answer they cannot proceed to the next question
     def check_answer(self, selected, correct, question_num):
+        if selected == 0:
+            error_label = Label(self.next_canvas, text="Please select an answer!", font=("Arial", 12, "bold"), bg="slategray1", fg="red")
+            error_label.place(x=500, y=510, anchor='center')
+            self.next_canvas.after(2000, error_label.destroy)
+            return
+
+    #Disable the confirm button so that the user doesn't accidentaly skip the question
         self.confirm_button.config(state=DISABLED)
         selected_rb = None
         for rb in self.radio_buttons:

@@ -39,8 +39,10 @@ class QuizStarter:
 
         self.create_homepage_canvas()
 
+  
     def create_homepage_canvas(self):
-    #Canvas setup to add the widgets on top of the Image like the button
+    
+        #Canvas setup to add the widgets on top of the Image like the button
         self.canvas = tk.Canvas(self.parent, bg=self.background_color, width=960, height=540)
         self.canvas.pack()
 
